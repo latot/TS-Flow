@@ -1,0 +1,54 @@
+TS Flow
+
+I don't know explain for what is the project, so I'll start from where it comes.
+
+History: I was playing games, and every game have stats, like attack, defense, etc, etc, and is very usuall today that we can "choose" options, to get more or less stats, but the games usually don't allow to know what will be final stat..., not always 10 attack + 10 attack is 20 of attack, or how 10 of attack will affect the final damage, every game have their own ways to calculate this.
+
+So, I was thinking to made toons of guides to know how to "optimize" but again, very low ppl will can use it, and even knowing how the game works, can request a lot of time calculate what we want manually, here it comes the project, why not make a webpage that we can simulate the stats and their choice? but is not very usefull make a page that only works for 1 game, so, lets make a JS program base that allow us to, in the simplest way, simulate all of this, and try to now limit it only to games.
+
+This project have the next concept, we want to process or calculate something, this "node", will be called "stage", every stage is added to a JS Class called "flow", the flow know every stage, every stage have a uniq id, and knows how every stage are related, so, in case a stage is changed, it can update all the parents, changing the final result.
+
+Every stage, is a JS Class, that can be anything, while it have enough info for the flow, it can have or not a Gui, but in the end, it gets the data from their childs, in the way it wants to, and return a result.
+
+An stage, can have more childs to load and relate, for this, we use the module "Handler", the "Load" funcion load stages and return the ids of the childs, to do, what the stage wants to do.
+
+Until here, the main concept.
+
+Just to simplify, there is some other modules to support "easy" ways to stats and games.
+
+Collector Module:
+
+Have 3 classes.
+
+Permutations: This will have an array of "properties" that are related to a set of "stats".
+The union of two permutations, is literally the permutations of every of both collection of data.
+Per1 = <Prop1, Data1>, <Prop2, Data2>
+Per2 = <Prop3, Data3>, <Prop4, Data4>
+
+Per1 + Per2 = <Prop1 union Prop3, Data1 union Data3>, <Prop1 union Prop4, Data1 union Data4>, <Prop2 union Prop3, Data2 union Data3>, <Prop2 union Prop4, Data2 union Data4>
+
+<Prop1, Per<Prop2, Data1>> = <Prop1 union Prop2, Data1>
+
+This is very usefull when we have "probabilities", because they works like this.
+
+Classes:
+
+If, is not a permutation object, this class will works, it will sort all the stats.
+
+Every stage, that are reach the end of the data, need to have a "collector" class, that knows how to sort and organize the data collected in the process.
+
+If we have a Stat("Attack", 10)
+
+This class will say:
+
+Stat.collector() => how to sort them
+
+Then the Stat will be added to the collector if is the first class of that type, and it can be added as an array.
+
+Classes will have a dictionary with the element "Stat" (stage constructor name) with other dictionary with the element "Attack", containing the array [10], why this structure? because I made it to be simple, then we can make a new stage that works over this, and do what it wants to the collected data.
+
+Solver: Thiss will pick all the data, and sort it where the structure is Solver containes a Permutation, every sub item of permutation is contained in a "Classes", the "solver" will works over every sub item, so in the end, there will be no permutations inside the permutations, and is all contained inside the "Classes".
+
+In the "Values" module, there is the example of "Stat" and the collector.
+
+This project is in WIP state, any idea to do it better is welcome.
